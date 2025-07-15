@@ -25,10 +25,13 @@ export function ApiProvider({ children }) {
       ...options,
       headers,
     });
-    const isJson = /json/.test(response.headers.get("Content-Type"));
-    const result = isJson ? await response.json() : undefined;
+    const contentType = response.headers.get("Content-Type");
+    console.log(contentType);
+    const isJson = /json/.test(contentType || " ");
+    const result = isJson ? await response.json() : await response.text();
+    console.log(result);
     if (!response.ok) throw Error(result?.message ?? "Something went wrong :(");
-    return result;
+    return isJson ? result : undefined;
   };
 
   const [tags, setTags] = useState({});

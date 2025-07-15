@@ -1,6 +1,8 @@
 import { useAuth } from "../auth/AuthContext";
 import useQuery from "../api/useQuery";
 import useMutation from "../api/useMutation";
+import { Link } from "react-router";
+import { useParams } from "react-router";
 
 /** Shows a list of activities. */
 export default function ActivityList() {
@@ -13,10 +15,14 @@ export default function ActivityList() {
   if (loading || !activities) return <p>Loading...</p>;
   if (error) return <p>Sorry! {error}</p>;
 
+  // const {Activity} = useParams();
+
   return (
     <ul>
-      {activities.map((activity) => (
-        <ActivityListItem key={activity.id} activity={activity} />
+      {activities.map((activity, index) => (
+        <Link to={`/Activities/${activity.id}`}>
+          <ActivityListItem key={index} activity={activity} />
+        </Link>
       ))}
     </ul>
   );
